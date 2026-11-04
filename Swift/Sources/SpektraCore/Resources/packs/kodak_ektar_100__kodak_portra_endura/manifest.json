@@ -1,0 +1,97 @@
+{
+  "arrays": {
+    "input_matrix": {
+      "shape": [
+        3,
+        3
+      ],
+      "offset": 0
+    },
+    "input_matrix_srgb": {
+      "shape": [
+        3,
+        3
+      ],
+      "offset": 9
+    },
+    "tc_lut": {
+      "shape": [
+        192,
+        192,
+        3
+      ],
+      "offset": 18
+    },
+    "couplers_matrix": {
+      "shape": [
+        3,
+        3
+      ],
+      "offset": 110610
+    },
+    "enlarger.base_illuminant": {
+      "shape": [
+        81
+      ],
+      "offset": 110619
+    },
+    "enlarger.filtered_illuminant": {
+      "shape": [
+        81
+      ],
+      "offset": 110700
+    },
+    "enlarger.dichroic_filters": {
+      "shape": [
+        81,
+        3
+      ],
+      "offset": 110781
+    },
+    "enlarger.cc_neutral": {
+      "shape": [
+        3
+      ],
+      "offset": 111024
+    },
+    "enlarger.midgray_density": {
+      "shape": [
+        81
+      ],
+      "offset": 111027
+    },
+    "scan.illuminant": {
+      "shape": [
+        81
+      ],
+      "offset": 111108
+    },
+    "scan.cmfs": {
+      "shape": [
+        81,
+        3
+      ],
+      "offset": 111189
+    },
+    "scan.normalization": {
+      "shape": [
+        1
+      ],
+      "offset": 111432
+    },
+    "scan.xyz_to_rgb": {
+      "shape": [
+        3,
+        3
+      ],
+      "offset": 111433
+    },
+    "scan.roundtrip_matrix": {
+      "shape": [
+        3,
+        3
+      ],
+      "offset": 111442
+    }
+  }
+}

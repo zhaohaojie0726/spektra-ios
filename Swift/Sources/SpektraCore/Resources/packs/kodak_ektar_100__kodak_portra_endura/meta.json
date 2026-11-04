@@ -1,0 +1,8 @@
+{
+  "film": "kodak_ektar_100",
+  "paper": "kodak_portra_endura",
+  "input_color_space": "Display P3",
+  "output_color_space": "sRGB",
+  "reference_commit": "3bb2c2d",
+  "format_version": 1
+}

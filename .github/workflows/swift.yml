@@ -1,0 +1,34 @@
+# Builds the Swift package on a macOS runner, so compile errors show up
+# without anyone sitting at a Mac.
+#
+# Push the repository to GitHub and this runs on every push; the job log is
+# the same output `swift build` would print locally.
+name: swift
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Toolchain
+        run: |
+          swift --version
+          xcodebuild -version
+
+      - name: Build
+        working-directory: Swift
+        run: swift build
+
+      - name: Test
+        working-directory: Swift
+        run: swift test
+
+      - name: Probe
+        working-directory: Swift
+        run: swift run spektra-probe

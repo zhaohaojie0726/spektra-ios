@@ -1,0 +1,232 @@
+{
+  "reference_commit": "3bb2c2d",
+  "film": "kodak_portra_400",
+  "print": "kodak_portra_endura",
+  "lut_mode": true,
+  "input_color_space": "ProPhoto RGB",
+  "output_color_space": "sRGB",
+  "arrays": {
+    "input.rgb": {
+      "shape": [
+        24,
+        32,
+        3
+      ],
+      "offset": 0
+    },
+    "taps.rgb_pre": {
+      "shape": [
+        24,
+        32,
+        3
+      ],
+      "offset": 2304
+    },
+    "taps.log_e_film": {
+      "shape": [
+        24,
+        32,
+        3
+      ],
+      "offset": 4608
+    },
+    "taps.cmy_film": {
+      "shape": [
+        24,
+        32,
+        3
+      ],
+      "offset": 6912
+    },
+    "taps.log_e_print": {
+      "shape": [
+        24,
+        32,
+        3
+      ],
+      "offset": 9216
+    },
+    "taps.cmy_print": {
+      "shape": [
+        24,
+        32,
+        3
+      ],
+      "offset": 11520
+    },
+    "taps.rgb_out": {
+      "shape": [
+        24,
+        32,
+        3
+      ],
+      "offset": 13824
+    },
+    "setup.couplers_matrix": {
+      "shape": [
+        3,
+        3
+      ],
+      "offset": 16128
+    },
+    "setup.colour_matrix_srgb_to_xyz": {
+      "shape": [
+        3,
+        3
+      ],
+      "offset": 16137
+    },
+    "setup.scan.illuminant": {
+      "shape": [
+        81
+      ],
+      "offset": 16146
+    },
+    "setup.scan.cmfs": {
+      "shape": [
+        81,
+        3
+      ],
+      "offset": 16227
+    },
+    "setup.scan.normalization": {
+      "shape": [
+        1
+      ],
+      "offset": 16470
+    },
+    "setup.scan.xyz_to_rgb": {
+      "shape": [
+        3,
+        3
+      ],
+      "offset": 16471
+    },
+    "setup.scan.roundtrip_matrix": {
+      "shape": [
+        3,
+        3
+      ],
+      "offset": 16480
+    },
+    "setup.enlarger.base_illuminant": {
+      "shape": [
+        81
+      ],
+      "offset": 16489
+    },
+    "setup.enlarger.filtered_illuminant": {
+      "shape": [
+        81
+      ],
+      "offset": 16570
+    },
+    "setup.enlarger.dichroic_filters": {
+      "shape": [
+        81,
+        3
+      ],
+      "offset": 16651
+    },
+    "setup.enlarger.density_spectral_midgray": {
+      "shape": [
+        81
+      ],
+      "offset": 16894
+    },
+    "setup.enlarger.cc_neutral": {
+      "shape": [
+        3
+      ],
+      "offset": 16975
+    },
+    "setup.film.log_sensitivity": {
+      "shape": [
+        81,
+        3
+      ],
+      "offset": 16978
+    },
+    "setup.film.channel_density": {
+      "shape": [
+        81,
+        3
+      ],
+      "offset": 17221
+    },
+    "setup.film.base_density": {
+      "shape": [
+        81
+      ],
+      "offset": 17464
+    },
+    "setup.film.log_exposure": {
+      "shape": [
+        256
+      ],
+      "offset": 17545
+    },
+    "setup.film.density_curves": {
+      "shape": [
+        256,
+        3
+      ],
+      "offset": 17801
+    },
+    "setup.print.log_sensitivity": {
+      "shape": [
+        81,
+        3
+      ],
+      "offset": 18569
+    },
+    "setup.print.channel_density": {
+      "shape": [
+        81,
+        3
+      ],
+      "offset": 18812
+    },
+    "setup.print.base_density": {
+      "shape": [
+        81
+      ],
+      "offset": 19055
+    },
+    "setup.print.log_exposure": {
+      "shape": [
+        256
+      ],
+      "offset": 19136
+    },
+    "setup.print.density_curves": {
+      "shape": [
+        256,
+        3
+      ],
+      "offset": 19392
+    },
+    "setup.tc_lut": {
+      "shape": [
+        192,
+        192,
+        3
+      ],
+      "offset": 20160
+    },
+    "setup.wavelengths": {
+      "shape": [
+        81
+      ],
+      "offset": 130752
+    },
+    "setup.colour_matrix_input_to_xyz": {
+      "shape": [
+        3,
+        3
+      ],
+      "offset": 130833
+    }
+  },
+  "total_floats": 130842
+}
