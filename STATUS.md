@@ -51,9 +51,9 @@ threads-print 0.0    threads-scan 0.0    strips 0.0
 |---|---|
 | Swift 源码（核心 + probe + CLI） | 20 文件 / 1,989 行 |
 | Swift 测试 | 10 文件 / 708 行 |
-| App 源码 | 3 文件 / 388 行 |
+| App 源码 | 5 文件 / 805 行（布局参考 SpektraLab，见 `App/README.md`） |
 | 烘焙数据 | golden 0.53 MB + 3 pack 1.34 MB + 4 profile 0.86 MB |
-| 交付包 | 91 文件 / 2.33 MB |
+| 交付包 | 95 文件 / 2.37 MB |
 
 ## 在 Mac 上
 
