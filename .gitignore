@@ -33,5 +33,6 @@ Reference/goldens/
 .DS_Store
 Thumbs.db
 
-# The CI workflow needs the workflow OAuth scope to push; add it back with
-# gh auth refresh -s workflow once, then git add .github`n.github/
+# The CI workflow needs the `workflow` OAuth scope to push. Add it back with
+# `gh auth refresh -s workflow`, delete this rule, then commit .github/.
+.github/

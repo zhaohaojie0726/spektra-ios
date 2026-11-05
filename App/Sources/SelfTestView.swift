@@ -3,73 +3,119 @@ import SwiftUI
 
 /// Runs the golden comparison on this device and shows one row per stage.
 ///
-/// This is the answer to "does it really run on iOS": the numbers are compared
-/// against the Python reference, not against a picture that looks right.
+/// Styled like the editor's rails — dark well, hairlines, monospaced numbers —
+/// because it is a diagnostic of the same instrument, not a settings page.
 struct SelfTestView: View {
     @State private var results: [SelfTest.Result] = []
     @State private var benchmark: SelfTest.Benchmark?
     @State private var isRunning = true
 
     var body: some View {
-        NavigationStack {
-            List {
-                Section {
-                    if isRunning {
-                        HStack {
-                            ProgressView()
-                            Text("比对中…").foregroundStyle(.secondary)
+        ZStack {
+            Theme.card.ignoresSafeArea()
+            VStack(spacing: 0) {
+                header
+                Hairline()
+                ScrollView {
+                    VStack(spacing: 0) {
+                        ForEach(Array(results.enumerated()), id: \.offset) { _, result in
+                            row(result)
+                            Hairline()
+                        }
+                        if let benchmark {
+                            benchmarkRow(benchmark)
+                            Hairline()
                         }
                     }
-                    ForEach(Array(results.enumerated()), id: \.offset) { _, result in
-                        HStack(alignment: .top, spacing: 10) {
-                            Image(systemName: result.passed ? "checkmark.circle.fill" : "xmark.octagon.fill")
-                                .foregroundStyle(result.passed ? Color.green : Color.red)
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(result.name).font(.footnote)
-                                Text(String(format: "max |diff| %.2e   (tol %.0e)", result.maxDiff, result.tolerance))
-                                    .font(.caption2)
-                                    .monospacedDigit()
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
-                    }
-                } header: {
-                    Text("对照 Python 参考实现")
-                } footer: {
-                    Text("每条都在本机 CPU 上跑一遍，误差阈值 2e-5。"
-                         + "全绿说明这台设备上的数值与参考一致。")
                 }
+                footer
+            }
+        }
+        .task {
+            let report = await Task.detached(priority: .userInitiated) {
+                SelfTest.run()
+            }.value
+            results = report
+            isRunning = false
+            benchmark = await Task.detached(priority: .utility) {
+                SelfTest.benchmark()
+            }.value
+        }
+    }
 
-                if let benchmark {
-                    Section {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(String(format: "512×512 渲染：%.0f ms / 帧", benchmark.milliseconds / 2))
-                                .font(.footnote)
-                            Text(String(format: "≈ %.2f 秒 / 百万像素",
-                                        benchmark.millisecondsPerMegapixel / 1000))
-                                .font(.caption2)
-                                .monospacedDigit()
-                                .foregroundStyle(.secondary)
-                        }
-                    } header: {
-                        Text("速度")
-                    } footer: {
-                        Text("乘上你的照片像素数，就是这个 App 单次渲染的大致耗时。")
-                    }
-                }
+    private var header: some View {
+        HStack {
+            Text("自检")
+                .font(Theme.Type_.navTitle)
+                .foregroundStyle(Theme.Ink.text)
+            Spacer()
+            if isRunning {
+                ProgressView().controlSize(.small).tint(Theme.accent)
+            } else {
+                let passed = results.filter(\.passed).count
+                Text("\(passed)/\(results.count)")
+                    .font(Theme.Type_.value)
+                    .foregroundStyle(passed == results.count ? Theme.accent : Theme.Ink.secondary)
             }
-            .navigationTitle("自检")
-            .navigationBarTitleDisplayMode(.inline)
-            .task {
-                let report = await Task.detached(priority: .userInitiated) {
-                    SelfTest.run()
-                }.value
-                results = report
-                isRunning = false
-                benchmark = await Task.detached(priority: .utility) {
-                    SelfTest.benchmark()
-                }.value
+        }
+        .padding(.horizontal, Theme.Metric.panelPadding)
+        .frame(height: 40)
+    }
+
+    private func row(_ result: SelfTest.Result) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: 8) {
+            Text(result.passed ? "OK" : "FAIL")
+                .font(Theme.Type_.value)
+                .foregroundStyle(result.passed ? Theme.accent : Color(hex: 0xE8524E))
+                .frame(width: 34, alignment: .leading)
+            VStack(alignment: .leading, spacing: 1) {
+                Text(result.name)
+                    .font(Theme.Type_.label)
+                    .foregroundStyle(Theme.Ink.text)
+                Text(result.maxDiff.isFinite
+                     ? String(format: "max |diff| %.2e   tol %.0e", result.maxDiff, result.tolerance)
+                     : "did not run")
+                    .font(Theme.Type_.sublabel)
+                    .foregroundStyle(Theme.Ink.tertiary)
             }
+            Spacer(minLength: 4)
+        }
+        .padding(.horizontal, Theme.Metric.panelPadding)
+        .padding(.vertical, 7)
+    }
+
+    private func benchmarkRow(_ benchmark: SelfTest.Benchmark) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: 8) {
+            Text("512")
+                .font(Theme.Type_.value)
+                .foregroundStyle(Theme.Ink.tertiary)
+                .frame(width: 34, alignment: .leading)
+            VStack(alignment: .leading, spacing: 1) {
+                Text(String(format: "%.0f ms / frame", benchmark.milliseconds / 2))
+                    .font(Theme.Type_.label)
+                    .foregroundStyle(Theme.Ink.text)
+                Text(String(format: "≈ %.2f s per megapixel",
+                            benchmark.millisecondsPerMegapixel / 1000))
+                    .font(Theme.Type_.sublabel)
+                    .foregroundStyle(Theme.Ink.tertiary)
+            }
+            Spacer(minLength: 4)
+        }
+        .padding(.horizontal, Theme.Metric.panelPadding)
+        .padding(.vertical, 7)
+    }
+
+    private var footer: some View {
+        VStack(spacing: 0) {
+            Hairline()
+            Text("每条都在本机 CPU 上跑一遍，对照 Python 参考，阈值 2e-5。"
+                 + "全绿说明这台设备上的数值与参考一致。")
+                .font(Theme.Type_.sublabel)
+                .foregroundStyle(Theme.Ink.tertiary)
+                .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, Theme.Metric.panelPadding)
+                .padding(.vertical, 10)
         }
     }
 }

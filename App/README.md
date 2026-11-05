@@ -1,13 +1,33 @@
 # iOS App（SwiftUI 壳）
 
-三个文件，都很小：
+五个文件，都很小：
 
 | 文件 | 作用 |
 |---|---|
 | `SpektraApp.swift` | `@main` |
-| `ContentView.swift` | 选图 → 渲染 → 全尺寸 → 导出（ShareLink，不需要相册权限） |
+| `Theme.swift` | 调色板与度量，照搬 SpektraLab 的 `Theme.swift` |
+| `Controls.swift` | 分区头、参数行（渐变轨道）、胶片 chip |
+| `ContentView.swift` | 编辑器主界面：选图 → 渲染 → 全尺寸 → 导出 |
 | `SelfTestView.swift` | 自检页：设备上的 golden 对拍 + 计时 |
 | （核心在 `../Swift/`） | `BundledPack` + `Simulator` |
+
+## 布局参考 SpektraLab
+
+桌面版是三栏（左胶片/相纸、中间画布、右参数）。手机放不下三栏，所以
+**保留了它的视觉语言，把两条 rail 合成画布下方的一条**：
+
+| SpektraLab | 这里 |
+|---|---|
+| 中性灰画布 + 四周深色 rail | 画布仍是中性灰，面板在下方 |
+| rail 上 26 pt 的分区头（三角形 + 小号加粗标题 + 发丝线） | `SectionBlock`，同样 30 pt、同样三角 |
+| 参数行：标签 / 1.36 pt 细轨 / 右对齐等宽数值 | `ScrubRow`，轨道加粗到 2 pt 便于手指 |
+| 滤色片轨道用渐变表示方向（黄→蓝、品红→绿） | 相同渐变、相同语义 |
+| 选中项 = 白底黑字（无圆角卡片） | 同款 `StockChip` |
+| 琥珀色 `#E1A95F` 只用于状态 | 同款，仅用于进度与「通过」 |
+| 小号字（9–12 pt）、等宽数字 | 同款 |
+
+设计稿（不是截图）：[docs/mock-ios.png](../docs/mock-ios.png)，
+由 `python Tools/mock-ios.py` 生成。
 
 ## 新建工程（一次，约 2 分钟）
 
@@ -19,7 +39,8 @@ Xcode 16：
    - Language：**Swift**
    - 取消 "Use Core Data"
 2. 删除模板生成的 `ContentView.swift` 和 `SpektraApp.swift`（或直接覆盖）。
-3. 把 `App/Sources/` 里的三个 `.swift` 拖进工程（ContentView / SpektraApp / SelfTestView）（勾选 *Copy items if needed* 和 target）。
+3. 把 `App/Sources/` 里的**五个** `.swift` 拖进工程
+   （ContentView / SpektraApp / SelfTestView / Theme / Controls）。
 4. **File ▸ Add Package Dependencies… ▸ Add Local…**
    选 `Swift/` 目录（`Package.swift` 所在处），把 `SpektraCore` 加到 target。
 5. 选中 target ▸ General ▸ 最低部署版本 **iOS 17.0**。
